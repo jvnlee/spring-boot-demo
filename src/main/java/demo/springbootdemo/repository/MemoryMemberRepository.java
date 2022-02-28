@@ -1,9 +1,11 @@
 package demo.springbootdemo.repository;
 
 import demo.springbootdemo.domain.Member;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+// @Repository
 public class MemoryMemberRepository implements MemberRepository {
     // store과 sequence 모두 간단한 예시 상황이기 때문에 동시성 문제는 고려하지 않고 만듦
     private static Map<Long, Member> store = new HashMap<>();

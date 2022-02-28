@@ -3,16 +3,21 @@ package demo.springbootdemo.service;
 import demo.springbootdemo.domain.Member;
 import demo.springbootdemo.repository.MemberRepository;
 import demo.springbootdemo.repository.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+// @Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    // @Autowired
     public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository; // 의존성 주입 (Dependency Injection)
+        this.memberRepository = memberRepository;
+        // 의존성 주입 (Dependency Injection) 중에서 "생성자 주입" 유형 (가장 권장되는 방식)
     }
 
     // 회원 가입
