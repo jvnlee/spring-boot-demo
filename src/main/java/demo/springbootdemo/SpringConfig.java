@@ -14,29 +14,17 @@ import javax.sql.DataSource;
 // 컴포넌트 스캔 방식 외에, 직접 코드를 작성해 스프링 빈을 등록하기
 @Configuration
 public class SpringConfig {
-
-    private EntityManager em;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public SpringConfig(EntityManager em) {
-        this.em = em;
+    public SpringConfig(MemberRepository memberRepository) {
+        // 인자로 받는 memberRepository는 스프링이 자체적으로 생성해 Bean으로 가지고 있을 SpringDataJpaMemberRepository의 구현체의 객체.
+        this.memberRepository = memberRepository;
     }
 
     @Bean
     public MemberService memberService() {
-        return new MemberService(memberRepository()); // MemberService 객체를 생성해서 스프링 컨테이너에 등록
+        return new MemberService(memberRepository); // MemberService 객체를 생성해서 스프링 컨테이너에 등록
     }
 
-    @Bean
-    public MemberRepository memberRepository() {
-        /*
-        return new MemoryMemberRepository();
-        MemoryMemberRepository 객체를 생성해서 스프링 컨테이너에 등록
-         */
-        return new JpaMemberRepository(em);
-    }
-    /*
-    MemberRepository처럼 구현체가 바뀔 수 있는 경우는 이렇게 SpringConfig로 지정해주면 편리함
-    Bean 메서드의 return문에서 생성할 객체의 클래스명만 바꿔주면 되기 때문
-     */
 }
