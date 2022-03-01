@@ -6,10 +6,13 @@ import demo.springbootdemo.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 // @Service
+@Transactional
+// 데이터를 저장하거나 변경하는 행위를 하므로 @Transactional 애너테이션 필요
 public class MemberService {
 
     private final MemberRepository memberRepository;
