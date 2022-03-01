@@ -37,6 +37,6 @@ public class SpringConfig {
     }
     /*
     MemberRepository처럼 구현체가 바뀔 수 있는 경우는 이렇게 SpringConfig로 지정해주면 편리함
-    return문에서 생성할 객체의 클래스명만 바꿔주면 되기 때문
+    Bean 메서드의 return문에서 생성할 객체의 클래스명만 바꿔주면 되기 때문
      */
 }

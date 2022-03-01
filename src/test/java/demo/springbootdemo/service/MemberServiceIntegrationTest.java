@@ -1,42 +1,32 @@
 package demo.springbootdemo.service;
 
 import demo.springbootdemo.domain.Member;
-import demo.springbootdemo.repository.MemoryMemberRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import demo.springbootdemo.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class MemberServiceTest {
 
-    MemberService memberService;
-    MemoryMemberRepository memberRepository;
+@SpringBootTest
+// Spring 위에서 테스트 시킴
+@Transactional
+// @Transactional 애너테이션을 테스트 클래스에 붙이면, 테스트 실행으로 발생하는 데이터 트랜잭션이 테스트를 마친 이후 롤백되어 결과적으로 DB에는 영향을 주지 않게됨
+class MemberServiceIntegrationTest {
 
-    // 각 테스트 메서드 실행 전에 먼저 실행할 로직
-    @BeforeEach
-    public void beforeEach() {
-        memberRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memberRepository);
-    }
-
-    @AfterEach
-    public void afterEach() {
-        memberRepository.clearStore();
-    }
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
 
     @Test
     void join() {
-        // given - when - then 3단계를 생각하며 테스트 코드 작성하는 것을 권장
-
         // given
         Member member = new Member();
-        member.setName("andy");
+        member.setName("spring");
 
         // when
         Long savedId = memberService.join(member);
@@ -46,7 +36,6 @@ class MemberServiceTest {
         assertThat(member.getName()).isEqualTo(foundMember.getName());
     }
 
-    // 이 테스트 메서드는 join()에서 중복된 이름으로 가입을 시도할 시 예외가 제대로 던져지는지 확인하는 용도
     @Test
     public void existingNameCheck() {
         // given
@@ -60,16 +49,8 @@ class MemberServiceTest {
         memberService.join(mem1);
 
         // then
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(mem2));// (터져야할 예외, 예외가 발생할 로직)
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(mem2));
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원 이름입니다.");
-
-        /*
-        try {
-            memberService.join(mem2);
-        } catch (IllegalStateException e) {
-            assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원 이름입니다.");
-        }
-        */
     }
 
     @Test
