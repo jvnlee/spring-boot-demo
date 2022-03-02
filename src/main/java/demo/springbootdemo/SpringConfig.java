@@ -1,5 +1,6 @@
 package demo.springbootdemo;
 
+import demo.springbootdemo.aop.TimeTraceAop;
 import demo.springbootdemo.repository.JpaMemberRepository;
 import demo.springbootdemo.repository.MemberRepository;
 import demo.springbootdemo.repository.MemoryMemberRepository;
@@ -26,5 +27,4 @@ public class SpringConfig {
     public MemberService memberService() {
         return new MemberService(memberRepository); // MemberService 객체를 생성해서 스프링 컨테이너에 등록
     }
-
 }
